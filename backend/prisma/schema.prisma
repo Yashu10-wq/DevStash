@@ -13,4 +13,48 @@ model User {
   email     String   @unique
   password  String   
   createdAt DateTime @default(now())
+  profileUri String?
+  bio       String?
+  githubUri String?
+  updatedAt   DateTime  @updatedAt
+  projects  Project[]
+  collaborations ProjectCollaborator[]
+}
+model Project {
+  id            String    @id @default(uuid())
+  title         String    
+  description   String?
+  repositoryUrl String?   
+  
+  // Owner of the project
+  userId        String
+  owner         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Array of AI chat links/URIs for auto-categorization and analysis
+  aiChatUris    String[]  
+  
+  // Multiple collaborators working on this project
+  collaborators ProjectCollaborator[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Junction table for Many-to-Many relationship between Users and Projects (Sharing/Collaboration)
+model ProjectCollaborator {
+  id        String   @id @default(uuid())
+  userId    String
+  projectId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, projectId]) // Ensures a user can't be added twice to the same project
+}
+
+model BlackList{
+  id              String   @id @default(uuid())
+  refreshTokenHash String   @unique
+  createdAt DateTime @default(now())
+
 }
