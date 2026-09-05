@@ -19,6 +19,7 @@ model User {
   updatedAt   DateTime  @updatedAt
   projects  Project[]
   collaborations ProjectCollaborator[]
+  isEmailVerified Boolean @default(false)
 }
 model Project {
   id            String    @id @default(uuid())
@@ -57,4 +58,12 @@ model BlackList{
   refreshTokenHash String   @unique
   createdAt DateTime @default(now())
 
+}
+
+model OtpVerification {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  otp       String
+  createdAt DateTime @default(now())
+  expiresAt DateTime 
 }

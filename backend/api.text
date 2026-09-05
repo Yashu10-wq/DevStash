@@ -1,0 +1,2 @@
+/api/auth/register authconrtoller.register
+what it does checks if same person exists with email and returns user already exisyts else makes a user 
