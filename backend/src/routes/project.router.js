@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const projectController = require("../controllers/project.controllers");
+const authMiddleware = require("../middlewares/auth.middlewares");
+router.post("/",authMiddleware.isLoggedIn,projectController.registerProject);
+router.get("/",authMiddleware.isLoggedIn,projectController.getAllProjects);
+router.get("/:id",authMiddleware.isLoggedIn,projectController.getProjectById);
+router.patch("/:id",authMiddleware.isLoggedIn,projectController.updateProject);
+router.delete("/:id",authMiddleware.isLoggedIn,projectController.deleteProject);
+module.exports = router;

@@ -20,19 +20,24 @@ model User {
   projects  Project[]
   collaborations ProjectCollaborator[]
   isEmailVerified Boolean @default(false)
+  avatarUri String?
+  useAvatar Boolean @default(true)
 }
 model Project {
   id            String    @id @default(uuid())
   title         String    
   description   String?
+  techStack       String[]
+  status          String   @default("IN_PROGRESS")
   repositoryUrl String?   
-  
+  liveUrl         String?
   // Owner of the project
   userId        String
   owner         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   // Array of AI chat links/URIs for auto-categorization and analysis
   aiChatUris    String[]  
+  architectureLog String?
   
   // Multiple collaborators working on this project
   collaborators ProjectCollaborator[]
